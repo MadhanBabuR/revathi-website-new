@@ -1,0 +1,314 @@
+/* Free Online Class landing page — theme + bespoke components.
+   scrollcraft.css supplies the mechanism (.sc-*, [data-sc-*]); everything
+   here is this page's own design, on top of the six-token rebrand below. */
+
+:root {
+  --sc-canvas:     #120D0A;
+  --sc-surface:    #1D1611;
+  --sc-ink:        #F4E9DA;
+  --sc-ink-soft:   #B4A28D;
+  --sc-accent:     #E4600C;
+  --sc-accent-ink: #1A0F08;
+  --sc-font-display: "Cinzel", "Iowan Old Style", serif;
+  --sc-font-text:    "Outfit", system-ui, sans-serif;
+
+  /* per-chapter grounds: hard cuts, one warm-dark family, not a drift */
+  --fc-g0: #120D0A;
+  --fc-g1: #17110C;
+  --fc-g2: #0C0A08;
+  --fc-g3: #241407;
+  --fc-g4: #17110B;
+  --fc-g5: #17110C;
+  --fc-g6: #0B0908;
+}
+
+html { background: var(--fc-g0); }
+body { background: var(--fc-g0); color: var(--sc-ink); font-family: var(--sc-font-text); }
+
+/* ---------- masthead (no fixed CTA bar; small identity mark only) --------- */
+
+.fc-mast {
+  position: absolute;
+  top: var(--sc-5);
+  left: var(--sc-gutter);
+  font-family: var(--sc-font-display);
+  font-size: var(--sc-t-sm);
+  letter-spacing: var(--sc-track-wide);
+  color: var(--sc-ink-soft);
+  z-index: var(--sc-z-chrome);
+}
+.fc-mast a { color: inherit; text-decoration: none; }
+.fc-mast a:hover, .fc-mast a:focus-visible { color: var(--sc-ink); }
+
+/* ---------- the footprint rail: folio + signature move -------------------- */
+
+.fc-rail {
+  position: fixed;
+  z-index: var(--sc-z-chrome);
+  top: 50%;
+  left: var(--sc-5);
+  translate: 0 -50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sc-5);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.fc-rail__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sc-2);
+}
+
+.fc-rail__print {
+  width: 20px;
+  height: 20px;
+  color: var(--sc-ink-soft);
+  opacity: 0.28;
+  transform: scale(0.72) rotate(var(--fc-rot, 0deg));
+  transition: opacity var(--sc-d-slow) var(--sc-ease-out),
+              transform var(--sc-d-slow) var(--sc-ease-out),
+              color var(--sc-d-slow) var(--sc-ease-out);
+}
+.fc-rail__item.is-passed .fc-rail__print { color: var(--sc-ink-soft); opacity: 0.55; transform: scale(1) rotate(var(--fc-rot, 0deg)); }
+.fc-rail__item.is-active .fc-rail__print { color: var(--sc-accent); opacity: 1; transform: scale(1.12) rotate(var(--fc-rot, 0deg)); }
+
+.fc-rail__label {
+  position: absolute;
+  left: calc(100% + var(--sc-4));
+  top: 50%;
+  translate: 0 -50%;
+  white-space: nowrap;
+  max-width: 8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--sc-t-xs);
+  letter-spacing: var(--sc-track-wide);
+  color: var(--sc-ink);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity var(--sc-d-base) var(--sc-ease-out), transform var(--sc-d-base) var(--sc-ease-out);
+  pointer-events: none;
+}
+.fc-rail__item.is-active .fc-rail__label { opacity: 0.9; transform: translateX(0); }
+
+@media (max-width: 900px) {
+  .fc-rail { display: none; }
+}
+
+/* Reserve clearance so the rail + its label never overlaps chapter content. */
+@media (min-width: 900px) {
+  .chapter .sc-wrap { padding-left: max(var(--sc-gutter), 13.5rem); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fc-rail__print, .fc-rail__label { transition: opacity 1ms linear; }
+}
+
+/* ---------- chapters: hard-cut grounds, no gradient between them --------- */
+
+.chapter {
+  position: relative;
+  padding-block: var(--sc-section);
+  background: var(--fc-g0);
+}
+.chapter--recognition { background: var(--fc-g1); }
+.chapter--tension      { background: var(--fc-g2); }
+.chapter--turn          { background: var(--fc-g3); }
+.chapter--substance     { background: var(--fc-g4); }
+.chapter--range         { background: var(--fc-g5); }
+.chapter--close         { background: var(--fc-g6); }
+
+.fc-grid {
+  display: grid;
+  gap: var(--sc-8);
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .fc-grid--media-right { grid-template-columns: 1.05fr 0.95fr; }
+  .fc-grid--media-left  { grid-template-columns: 0.95fr 1.05fr; }
+  .fc-grid--media-left  .fc-media { order: -1; }
+}
+
+.fc-media {
+  position: relative;
+  border-radius: var(--sc-r-md);
+  overflow: hidden;
+  box-shadow: var(--sc-e2);
+}
+.fc-media img { display: block; width: 100%; height: auto; }
+.fc-media figcaption {
+  padding: var(--sc-3) var(--sc-4);
+  font-size: var(--sc-t-xs);
+  color: var(--sc-ink-soft);
+  background: var(--sc-surface);
+}
+
+/* ---------- hero: title page. Type only, no media above the fold -------- */
+
+.chapter--hero {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding-top: calc(var(--sc-section) + var(--sc-8));
+}
+.fc-hero__eyebrow {
+  font-size: var(--sc-t-sm);
+  color: var(--sc-ink-soft);
+  letter-spacing: var(--sc-track-wide);
+  margin: 0 0 var(--sc-5);
+}
+.fc-hero h1 {
+  font-family: var(--sc-font-display);
+  font-size: var(--sc-t-4xl);
+  line-height: var(--sc-leading-none);
+  letter-spacing: var(--sc-track-tight);
+  margin: 0 0 var(--sc-6);
+  max-width: 16ch;
+  text-wrap: balance;
+}
+.fc-hero p.sc-body { font-size: var(--sc-t-lg); max-width: 46ch; margin-bottom: var(--sc-7); }
+@media (max-width: 700px) {
+  .fc-hero h1 { font-size: clamp(2.1rem, 8vw, 2.6rem); max-width: 13ch; }
+}
+
+/* ---------- headings shared across chapters ------------------------------ */
+
+.chapter h2 {
+  font-family: var(--sc-font-display);
+  font-size: var(--sc-t-3xl);
+  line-height: var(--sc-leading-tight);
+  letter-spacing: var(--sc-track-snug);
+  max-width: 18ch;
+  text-wrap: balance;
+  margin: 0 0 var(--sc-6);
+}
+.chapter .sc-body { font-size: var(--sc-t-base); }
+
+/* ---------- CTA button (Turn chapter; the only button-shaped CTA) -------- */
+
+.fc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sc-2);
+  padding: var(--sc-4) var(--sc-6);
+  border-radius: var(--sc-r-pill);
+  background: var(--sc-accent);
+  color: var(--sc-accent-ink);
+  font-size: var(--sc-t-base);
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: var(--sc-e2);
+  transition: transform var(--sc-d-fast) var(--sc-ease-out), box-shadow var(--sc-d-fast) var(--sc-ease-out);
+}
+.fc-btn:hover  { transform: translateY(-1px); box-shadow: var(--sc-e3); }
+.fc-btn:active { transform: translateY(1px) scale(0.98); }
+.fc-btn:focus-visible { outline: 2px solid var(--sc-ink); outline-offset: 3px; }
+
+/* ---------- quote block --------------------------------------------------- */
+
+.fc-quote {
+  margin: var(--sc-7) 0 0;
+  padding-left: var(--sc-5);
+  border-left: 2px solid var(--sc-accent);
+  font-family: var(--sc-font-display);
+  font-size: var(--sc-t-lg);
+  line-height: var(--sc-leading-tight);
+  color: var(--sc-ink);
+  max-width: 44ch;
+}
+
+/* ---------- tension: named doubts as a plain running list, not cards ----- */
+
+.fc-doubts { max-width: var(--sc-measure); }
+.fc-doubts dt {
+  font-family: var(--sc-font-display);
+  font-size: var(--sc-t-base);
+  color: var(--sc-ink);
+  margin-top: var(--sc-6);
+}
+.fc-doubts dt:first-child { margin-top: 0; }
+.fc-doubts dd {
+  margin: var(--sc-1) 0 0;
+  color: var(--sc-ink-soft);
+  max-width: var(--sc-measure);
+}
+
+/* ---------- range: annotated list, one accent rule per row, no cards ----- */
+
+.fc-benefits { list-style: none; margin: 0; padding: 0; max-width: var(--sc-measure); }
+.fc-benefits li {
+  padding: var(--sc-5) 0;
+  border-top: 1px solid var(--sc-hairline);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sc-1);
+}
+.fc-benefits li:last-child { border-bottom: 1px solid var(--sc-hairline); }
+.fc-benefits strong {
+  font-family: var(--sc-font-display);
+  font-weight: 600;
+  color: var(--sc-ink);
+}
+.fc-benefits span { color: var(--sc-ink-soft); }
+
+.fc-range__media {
+  display: grid;
+  gap: var(--sc-5);
+  margin-top: var(--sc-8);
+}
+@media (min-width: 700px) {
+  .fc-range__media { grid-template-columns: 1.3fr 1fr; align-items: start; }
+}
+
+/* ---------- substance (peak): quiet, spacious, largest weight ------------ */
+
+.chapter--substance .fc-grid { gap: var(--sc-10); }
+.chapter--substance h2 { max-width: 15ch; }
+.fc-lineage {
+  display: flex;
+  align-items: center;
+  gap: var(--sc-4);
+  margin-top: var(--sc-7);
+  padding-top: var(--sc-5);
+  border-top: 1px solid var(--sc-hairline);
+}
+.fc-lineage img {
+  width: 4.5rem;
+  height: 4.5rem;
+  object-fit: cover;
+  border-radius: var(--sc-r-sm);
+  flex: none;
+}
+.fc-lineage figcaption { font-size: var(--sc-t-xs); color: var(--sc-ink-soft); max-width: 28ch; }
+
+/* ---------- close: colophon. Small type, CTA as running text ------------- */
+
+.chapter--close { padding-block: var(--sc-10) var(--sc-9); }
+.fc-colophon { max-width: 34rem; }
+.fc-colophon h2 {
+  font-size: var(--sc-t-2xl);
+  max-width: 14ch;
+}
+.fc-colophon p { font-size: var(--sc-t-base); color: var(--sc-ink-soft); }
+.fc-colophon .fc-ask { color: var(--sc-ink); }
+.fc-colophon a.fc-line-link {
+  color: var(--sc-accent);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+}
+.fc-foot {
+  margin-top: var(--sc-9);
+  padding-top: var(--sc-5);
+  border-top: 1px solid var(--sc-hairline);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sc-2) var(--sc-6);
+  font-size: var(--sc-t-xs);
+  color: var(--sc-ink-soft);
+}
+.fc-foot a { color: inherit; }
+.fc-foot a:hover, .fc-foot a:focus-visible { color: var(--sc-ink); }

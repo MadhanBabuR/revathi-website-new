@@ -74,6 +74,23 @@ a { color: inherit; }
 }
 .topbar-ig:hover { opacity: 1; color: var(--gold-light); }
 
+.topbar-free {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  color: var(--gold-light);
+  border: 1px solid rgba(227,184,105,0.5);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
+}
+.topbar-free:hover { background: var(--gold-light); color: var(--maroon-dark); }
+@media (max-width: 560px) {
+  .topbar-free { font-size: 0.68rem; padding: 0.32rem 0.6rem; }
+}
+
 /* ---------- Buttons ---------- */
 .btn {
   display: inline-block;
