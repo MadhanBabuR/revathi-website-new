@@ -1,52 +1,93 @@
 /* Free Online Class landing page — theme + bespoke components.
    scrollcraft.css supplies the mechanism (.sc-*, [data-sc-*]); everything
-   here is this page's own design, on top of the six-token rebrand below. */
+   here is this page's own design, on top of the six-token rebrand below.
+
+   Display face is Eczar: designed for Devanagari alongside Latin, wedge
+   serifs, real lowercase. Cinzel (the main site's face) is inscriptional
+   capitals and turns sentence-length headlines into unreadable caps walls,
+   so it is deliberately not used here. */
 
 :root {
-  --sc-canvas:     #120D0A;
-  --sc-surface:    #1D1611;
+  --sc-canvas:     #0F0B08;
+  --sc-surface:    #1C150F;
   --sc-ink:        #F4E9DA;
-  --sc-ink-soft:   #B4A28D;
+  --sc-ink-soft:   #B09B85;
   --sc-accent:     #E4600C;
   --sc-accent-ink: #1A0F08;
-  --sc-font-display: "Cinzel", "Iowan Old Style", serif;
-  --sc-font-text:    "Outfit", system-ui, sans-serif;
+  --sc-font-display: "Eczar", "Iowan Old Style", Georgia, serif;
+  --sc-font-text:    "Archivo", system-ui, sans-serif;
 
-  /* per-chapter grounds: hard cuts, one warm-dark family, not a drift */
-  --fc-g0: #120D0A;
-  --fc-g1: #17110C;
-  --fc-g2: #0C0A08;
-  --fc-g3: #241407;
-  --fc-g4: #17110B;
-  --fc-g5: #17110C;
-  --fc-g6: #0B0908;
+  --sc-maxw: 74rem;
+
+  /* per-chapter grounds: real steps so the cuts read as cuts */
+  --fc-g0: #0F0B08;
+  --fc-g1: #1A130C;
+  --fc-g2: #0A0908;
+  --fc-g3: #2B1608;
+  --fc-g4: #120D09;
+  --fc-g5: #1A130C;
+  --fc-g6: #0A0807;
+
+  --fc-rail-w: 26px;
 }
 
 html { background: var(--fc-g0); }
-body { background: var(--fc-g0); color: var(--sc-ink); font-family: var(--sc-font-text); }
-
-/* ---------- masthead (no fixed CTA bar; small identity mark only) --------- */
-
-.fc-mast {
-  position: absolute;
-  top: var(--sc-5);
-  left: var(--sc-gutter);
-  font-family: var(--sc-font-display);
-  font-size: var(--sc-t-sm);
-  letter-spacing: var(--sc-track-wide);
-  color: var(--sc-ink-soft);
-  z-index: var(--sc-z-chrome);
+body {
+  background: var(--fc-g0);
+  color: var(--sc-ink);
+  font-family: var(--sc-font-text);
 }
-.fc-mast a { color: inherit; text-decoration: none; }
-.fc-mast a:hover, .fc-mast a:focus-visible { color: var(--sc-ink); }
 
-/* ---------- the footprint rail: folio + signature move -------------------- */
+/* ---------- fixed chrome: mast + folio (no CTA bar, per the grammar) ----- */
+
+.fc-chrome {
+  position: fixed;
+  top: var(--sc-5);
+  left: clamp(1.25rem, 3vw, 2.5rem);
+  z-index: var(--sc-z-chrome);
+  max-width: 10rem;
+  font-size: var(--sc-t-xs);
+  line-height: 1.5;
+}
+.fc-chrome__mast {
+  margin: 0;
+  letter-spacing: 0.14em;
+  color: var(--sc-ink-soft);
+}
+.fc-chrome__mast a { color: inherit; text-decoration: none; }
+.fc-chrome__mast a:hover,
+.fc-chrome__mast a:focus-visible { color: var(--sc-ink); }
+
+.fc-folio {
+  margin: var(--sc-2) 0 0;
+  display: flex;
+  gap: 0.55em;
+  color: var(--sc-ink-soft);
+  opacity: 0;
+  transition: opacity var(--sc-d-base) var(--sc-ease-out);
+}
+.fc-folio.is-on { opacity: 1; }
+.fc-folio__num { color: var(--sc-accent); font-variant-numeric: tabular-nums; }
+
+@media (max-width: 1099px) {
+  .fc-folio { display: none; }
+  /* nothing reserves a left margin at this width, so the mast scrolls with
+     the page instead of sitting fixed on top of the copy */
+  .fc-chrome {
+    position: static;
+    max-width: none;
+    padding: var(--sc-5) var(--sc-gutter) 0;
+  }
+  .chapter--hero { min-height: 0; padding-top: var(--sc-7); }
+}
+
+/* ---------- the footprint trail: the signature move ---------------------- */
 
 .fc-rail {
   position: fixed;
   z-index: var(--sc-z-chrome);
   top: 50%;
-  left: var(--sc-5);
+  left: clamp(1rem, 2.4vw, 2rem);
   translate: 0 -50%;
   display: flex;
   flex-direction: column;
@@ -57,58 +98,28 @@ body { background: var(--fc-g0); color: var(--sc-ink); font-family: var(--sc-fon
   padding: 0;
 }
 
-.fc-rail__item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--sc-2);
-}
-
 .fc-rail__print {
-  width: 20px;
-  height: 20px;
+  display: block;
+  width: var(--fc-rail-w);
+  height: calc(var(--fc-rail-w) * 1.3);
   color: var(--sc-ink-soft);
-  opacity: 0.28;
-  transform: scale(0.72) rotate(var(--fc-rot, 0deg));
-  transition: opacity var(--sc-d-slow) var(--sc-ease-out),
-              transform var(--sc-d-slow) var(--sc-ease-out),
-              color var(--sc-d-slow) var(--sc-ease-out);
+  opacity: 0.18;
+  transform: scale(0.82) rotate(var(--fc-rot, 0deg));
+  transition: opacity 520ms var(--sc-ease-out),
+              transform 520ms var(--sc-ease-out),
+              color 520ms var(--sc-ease-out);
 }
-.fc-rail__item.is-passed .fc-rail__print { color: var(--sc-ink-soft); opacity: 0.55; transform: scale(1) rotate(var(--fc-rot, 0deg)); }
-.fc-rail__item.is-active .fc-rail__print { color: var(--sc-accent); opacity: 1; transform: scale(1.12) rotate(var(--fc-rot, 0deg)); }
+.fc-rail__item.is-passed .fc-rail__print { opacity: 0.42; transform: scale(1) rotate(var(--fc-rot, 0deg)); }
+.fc-rail__item.is-active .fc-rail__print { color: var(--sc-accent); opacity: 1; transform: scale(1.1) rotate(var(--fc-rot, 0deg)); }
 
-.fc-rail__label {
-  position: absolute;
-  left: calc(100% + var(--sc-4));
-  top: 50%;
-  translate: 0 -50%;
-  white-space: nowrap;
-  max-width: 8rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: var(--sc-t-xs);
-  letter-spacing: var(--sc-track-wide);
-  color: var(--sc-ink);
-  opacity: 0;
-  transform: translateX(-6px);
-  transition: opacity var(--sc-d-base) var(--sc-ease-out), transform var(--sc-d-base) var(--sc-ease-out);
-  pointer-events: none;
-}
-.fc-rail__item.is-active .fc-rail__label { opacity: 0.9; transform: translateX(0); }
-
-@media (max-width: 900px) {
+@media (max-width: 1099px) {
   .fc-rail { display: none; }
 }
-
-/* Reserve clearance so the rail + its label never overlaps chapter content. */
-@media (min-width: 900px) {
-  .chapter .sc-wrap { padding-left: max(var(--sc-gutter), 13.5rem); }
-}
 @media (prefers-reduced-motion: reduce) {
-  .fc-rail__print, .fc-rail__label { transition: opacity 1ms linear; }
+  .fc-rail__print { transition: opacity 1ms linear; transform: scale(1) rotate(var(--fc-rot, 0deg)); }
 }
 
-/* ---------- chapters: hard-cut grounds, no gradient between them --------- */
+/* ---------- chapters ----------------------------------------------------- */
 
 .chapter {
   position: relative;
@@ -116,84 +127,113 @@ body { background: var(--fc-g0); color: var(--sc-ink); font-family: var(--sc-fon
   background: var(--fc-g0);
 }
 .chapter--recognition { background: var(--fc-g1); }
-.chapter--tension      { background: var(--fc-g2); }
-.chapter--turn          { background: var(--fc-g3); }
-.chapter--substance     { background: var(--fc-g4); }
-.chapter--range         { background: var(--fc-g5); }
-.chapter--close         { background: var(--fc-g6); }
+.chapter--tension     { background: var(--fc-g2); }
+.chapter--turn        { background: var(--fc-g3); }
+.chapter--substance   { background: var(--fc-g4); }
+.chapter--range       { background: var(--fc-g5); }
+.chapter--close       { background: var(--fc-g6); }
+
+/* leave room for the rail without shoving content into the middle */
+@media (min-width: 1100px) {
+  .chapter > .sc-wrap { padding-left: max(var(--sc-gutter), 5.5rem); }
+}
 
 .fc-grid {
   display: grid;
   gap: var(--sc-8);
-  align-items: center;
+  align-items: start;
 }
 @media (min-width: 900px) {
-  .fc-grid--media-right { grid-template-columns: 1.05fr 0.95fr; }
-  .fc-grid--media-left  { grid-template-columns: 0.95fr 1.05fr; }
-  .fc-grid--media-left  .fc-media { order: -1; }
+  .fc-grid { gap: var(--sc-9); grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; }
+  .fc-grid--media-left .fc-media { order: -1; }
 }
 
-.fc-media {
-  position: relative;
-  border-radius: var(--sc-r-md);
-  overflow: hidden;
-  box-shadow: var(--sc-e2);
+/* ---------- media: an editorial column with a caption, not a card -------- */
+
+.fc-media { margin: 0; }
+.fc-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 2px;
 }
-.fc-media img { display: block; width: 100%; height: auto; }
 .fc-media figcaption {
-  padding: var(--sc-3) var(--sc-4);
+  margin-top: var(--sc-3);
+  padding-top: var(--sc-3);
+  border-top: 1px solid var(--sc-hairline);
   font-size: var(--sc-t-xs);
+  line-height: 1.5;
   color: var(--sc-ink-soft);
-  background: var(--sc-surface);
+  max-width: 34ch;
 }
 
-/* ---------- hero: title page. Type only, no media above the fold -------- */
+/* ---------- typography --------------------------------------------------- */
 
-.chapter--hero {
-  min-height: 100svh;
-  display: flex;
-  align-items: center;
-  padding-top: calc(var(--sc-section) + var(--sc-8));
-}
-.fc-hero__eyebrow {
-  font-size: var(--sc-t-sm);
-  color: var(--sc-ink-soft);
-  letter-spacing: var(--sc-track-wide);
-  margin: 0 0 var(--sc-5);
-}
-.fc-hero h1 {
-  font-family: var(--sc-font-display);
-  font-size: var(--sc-t-4xl);
-  line-height: var(--sc-leading-none);
-  letter-spacing: var(--sc-track-tight);
-  margin: 0 0 var(--sc-6);
-  max-width: 16ch;
-  text-wrap: balance;
-}
-.fc-hero p.sc-body { font-size: var(--sc-t-lg); max-width: 46ch; margin-bottom: var(--sc-7); }
-@media (max-width: 700px) {
-  .fc-hero h1 { font-size: clamp(2.1rem, 8vw, 2.6rem); max-width: 13ch; }
-}
-
-/* ---------- headings shared across chapters ------------------------------ */
-
+.fc-hero h1,
 .chapter h2 {
   font-family: var(--sc-font-display);
-  font-size: var(--sc-t-3xl);
-  line-height: var(--sc-leading-tight);
-  letter-spacing: var(--sc-track-snug);
-  max-width: 18ch;
+  font-weight: 600;
+  color: var(--sc-ink);
   text-wrap: balance;
-  margin: 0 0 var(--sc-6);
+  margin: 0;
 }
-.chapter .sc-body { font-size: var(--sc-t-base); }
 
-/* ---------- CTA button (Turn chapter; the only button-shaped CTA) -------- */
+.fc-hero h1 {
+  font-size: clamp(2.6rem, 1.6rem + 4.4vw, 5.4rem);
+  line-height: 1.02;
+  letter-spacing: var(--sc-track-tight);
+  max-width: 17ch;
+}
+.chapter h2 {
+  font-size: clamp(2rem, 1.35rem + 2.6vw, 3.5rem);
+  line-height: 1.08;
+  letter-spacing: var(--sc-track-snug);
+  max-width: 20ch;
+}
+.chapter .sc-body { font-size: var(--sc-t-base); max-width: 54ch; }
+
+/* ---------- hero: a title page. Type only, sized to what it holds -------- */
+
+.chapter--hero {
+  min-height: 86svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: calc(var(--sc-section) + var(--sc-8));
+  padding-bottom: var(--sc-8);
+}
+.fc-hero__eyebrow {
+  margin: 0 0 var(--sc-5);
+  font-size: var(--sc-t-sm);
+  letter-spacing: 0.12em;
+  color: var(--sc-ink-soft);
+}
+.fc-hero p.sc-body {
+  font-size: var(--sc-t-lg);
+  line-height: 1.55;
+  max-width: 44ch;
+  margin-top: var(--sc-6);
+}
+.fc-hero .fc-btn { margin-top: var(--sc-7); }
+
+.fc-hero__foot {
+  margin-top: var(--sc-10);
+  padding-top: var(--sc-4);
+  border-top: 1px solid var(--sc-hairline);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sc-2) var(--sc-6);
+  font-size: var(--sc-t-xs);
+  color: var(--sc-ink-soft);
+  max-width: 44rem;
+}
+
+/* ---------- CTA ---------------------------------------------------------- */
 
 .fc-btn {
   display: inline-flex;
   align-items: center;
-  gap: var(--sc-2);
+  align-self: flex-start;
   padding: var(--sc-4) var(--sc-6);
   border-radius: var(--sc-r-pill);
   background: var(--sc-accent);
@@ -201,108 +241,115 @@ body { background: var(--fc-g0); color: var(--sc-ink); font-family: var(--sc-fon
   font-size: var(--sc-t-base);
   font-weight: 600;
   text-decoration: none;
-  box-shadow: var(--sc-e2);
-  transition: transform var(--sc-d-fast) var(--sc-ease-out), box-shadow var(--sc-d-fast) var(--sc-ease-out);
+  transition: transform var(--sc-d-fast) var(--sc-ease-out), filter var(--sc-d-fast) var(--sc-ease-out);
 }
-.fc-btn:hover  { transform: translateY(-1px); box-shadow: var(--sc-e3); }
-.fc-btn:active { transform: translateY(1px) scale(0.98); }
+.fc-btn:hover  { transform: translateY(-1px); filter: brightness(1.08); }
+.fc-btn:active { transform: translateY(1px) scale(0.985); }
 .fc-btn:focus-visible { outline: 2px solid var(--sc-ink); outline-offset: 3px; }
 
-/* ---------- quote block --------------------------------------------------- */
+/* ---------- quote: hanging indent, hairline rule, no coloured bar -------- */
 
 .fc-quote {
   margin: var(--sc-7) 0 0;
-  padding-left: var(--sc-5);
-  border-left: 2px solid var(--sc-accent);
+  padding-top: var(--sc-5);
+  border-top: 1px solid var(--sc-hairline);
   font-family: var(--sc-font-display);
+  font-weight: 500;
   font-size: var(--sc-t-lg);
-  line-height: var(--sc-leading-tight);
+  line-height: 1.34;
   color: var(--sc-ink);
-  max-width: 44ch;
+  max-width: 30ch;
 }
 
-/* ---------- tension: named doubts as a plain running list, not cards ----- */
+/* ---------- tension: the doubts, as running editorial pairs -------------- */
 
-.fc-doubts { max-width: var(--sc-measure); }
+.fc-doubts { margin: 0; max-width: 52ch; }
 .fc-doubts dt {
   font-family: var(--sc-font-display);
-  font-size: var(--sc-t-base);
+  font-weight: 600;
+  font-size: var(--sc-t-lg);
+  line-height: 1.25;
   color: var(--sc-ink);
   margin-top: var(--sc-6);
 }
-.fc-doubts dt:first-child { margin-top: 0; }
+.fc-doubts dt:first-of-type { margin-top: var(--sc-6); }
 .fc-doubts dd {
-  margin: var(--sc-1) 0 0;
+  margin: var(--sc-2) 0 0;
   color: var(--sc-ink-soft);
-  max-width: var(--sc-measure);
+  line-height: var(--sc-leading-body);
 }
 
-/* ---------- range: annotated list, one accent rule per row, no cards ----- */
+/* ---------- range: annotated rows -------------------------------------- */
 
-.fc-benefits { list-style: none; margin: 0; padding: 0; max-width: var(--sc-measure); }
+.fc-benefits { list-style: none; margin: var(--sc-7) 0 0; padding: 0; max-width: 46ch; }
 .fc-benefits li {
   padding: var(--sc-5) 0;
   border-top: 1px solid var(--sc-hairline);
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--sc-1);
 }
 .fc-benefits li:last-child { border-bottom: 1px solid var(--sc-hairline); }
 .fc-benefits strong {
+  display: block;
   font-family: var(--sc-font-display);
   font-weight: 600;
+  font-size: var(--sc-t-lg);
+  line-height: 1.25;
   color: var(--sc-ink);
 }
-.fc-benefits span { color: var(--sc-ink-soft); }
-
-.fc-range__media {
-  display: grid;
-  gap: var(--sc-5);
-  margin-top: var(--sc-8);
-}
-@media (min-width: 700px) {
-  .fc-range__media { grid-template-columns: 1.3fr 1fr; align-items: start; }
+.fc-benefits span {
+  display: block;
+  margin-top: var(--sc-1);
+  color: var(--sc-ink-soft);
+  line-height: var(--sc-leading-body);
 }
 
-/* ---------- substance (peak): quiet, spacious, largest weight ------------ */
+.fc-stack-media { display: grid; gap: var(--sc-7); }
 
-.chapter--substance .fc-grid { gap: var(--sc-10); }
-.chapter--substance h2 { max-width: 15ch; }
+/* the media stack here is far taller than the list, so centring the columns
+   would leave the list floating against a screen of image */
+@media (min-width: 900px) {
+  .chapter--range .fc-grid { align-items: start; }
+}
+
+/* ---------- substance (peak): the quietest, widest chapter --------------- */
+
+.chapter--substance { padding-block: calc(var(--sc-section) * 1.35); }
 .fc-lineage {
   display: flex;
   align-items: center;
   gap: var(--sc-4);
-  margin-top: var(--sc-7);
+  margin: var(--sc-7) 0 0;
   padding-top: var(--sc-5);
   border-top: 1px solid var(--sc-hairline);
+  max-width: 40ch;
 }
 .fc-lineage img {
-  width: 4.5rem;
-  height: 4.5rem;
+  width: 4.25rem;
+  height: 4.25rem;
   object-fit: cover;
-  border-radius: var(--sc-r-sm);
+  border-radius: 2px;
   flex: none;
 }
-.fc-lineage figcaption { font-size: var(--sc-t-xs); color: var(--sc-ink-soft); max-width: 28ch; }
+.fc-lineage figcaption { font-size: var(--sc-t-xs); line-height: 1.5; color: var(--sc-ink-soft); }
 
-/* ---------- close: colophon. Small type, CTA as running text ------------- */
+/* ---------- close: colophon, CTA as running text ------------------------ */
 
-.chapter--close { padding-block: var(--sc-10) var(--sc-9); }
-.fc-colophon { max-width: 34rem; }
-.fc-colophon h2 {
-  font-size: var(--sc-t-2xl);
-  max-width: 14ch;
+.fc-colophon { max-width: 40ch; }
+.fc-colophon h2 { font-size: clamp(1.9rem, 1.3rem + 2.2vw, 3rem); max-width: 12ch; }
+.fc-colophon .fc-ask {
+  margin-top: var(--sc-6);
+  font-size: var(--sc-t-lg);
+  line-height: 1.5;
+  color: var(--sc-ink);
 }
-.fc-colophon p { font-size: var(--sc-t-base); color: var(--sc-ink-soft); }
-.fc-colophon .fc-ask { color: var(--sc-ink); }
 .fc-colophon a.fc-line-link {
   color: var(--sc-accent);
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
 }
+.fc-colophon a.fc-line-link:hover { color: var(--sc-ink); }
 .fc-foot {
   margin-top: var(--sc-9);
-  padding-top: var(--sc-5);
+  padding-top: var(--sc-4);
   border-top: 1px solid var(--sc-hairline);
   display: flex;
   flex-wrap: wrap;
