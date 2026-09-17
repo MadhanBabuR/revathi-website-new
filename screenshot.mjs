@@ -37,7 +37,9 @@ const flag = (name, fallback) => {
 const width = flag("width", 1440);
 const height = flag("height", 900);
 const scrollY = flag("scroll", 0);
-const extraWait = flag("wait", 600);
+// long enough for staggered scroll reveals to finish; a shorter wait
+// captures elements mid-transition and they read as missing content
+const extraWait = flag("wait", 1400);
 const fullPage = argv.includes("--full");
 
 let nextId = 0;
@@ -131,9 +133,14 @@ const loaded = once("Page.loadEventFired");
 await send(ws, "Page.navigate", { url }, sessionId);
 await Promise.race([loaded, new Promise((r) => setTimeout(r, 20000))]);
 
-// let webfonts settle, otherwise the capture shows fallback faces
+// let webfonts settle, otherwise the capture shows fallback faces. Bounded:
+// a blocked stylesheet or script can leave document.fonts.ready pending
+// forever, and an unbounded awaitPromise would hang the whole run.
 await send(ws, "Runtime.evaluate", {
-  expression: "document.fonts ? document.fonts.ready.then(() => true) : true",
+  expression: `Promise.race([
+    document.fonts ? document.fonts.ready : Promise.resolve(),
+    new Promise(r => setTimeout(r, 5000)),
+  ]).then(() => true)`,
   awaitPromise: true,
 }, sessionId).catch(() => {});
 
@@ -166,6 +173,7 @@ const n = (used.length ? Math.max(...used) : 0) + 1;
 const outPath = join(OUT_DIR, `screenshot-${n}${label ? `-${label}` : ""}.png`);
 await writeFile(outPath, Buffer.from(data, "base64"));
 
+clearTimeout(watchdog);
 console.log(outPath);
 
 ws.close();

@@ -1,146 +1,560 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Amrutha E T — Kalariwoman | Kalaripayattu Trainer</title>
-<meta name="description" content="Amrutha E T — Kalaripayattu trainer and granddaughter of Guru Veerasree Sami Gurukkal. Online & offline classes at Hindustan Kalari Sangham.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kalari Women — Free online Kalaripayattu class with Revathi</title>
+<meta name="description" content="Kalaripayattu, one of the oldest fighting systems in the world, taught live online by Revathi of Hindustan Kalari Sangham. Your first class is free.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23120A07'/><path d='M16 6c3.6 3.4 6 6.6 6 10a6 6 0 0 1-12 0c0-3.4 2.4-6.6 6-10z' fill='%23F2761B'/></svg>">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<script>document.documentElement.className += " js";</script>
+<style>
+/* ————————————————————————————————————————————————
+   kalariwomen.com — single file, no framework.
+   Tailwind's CDN is blocked by this container's egress proxy, so the
+   utility layer is hand-written here instead. Palette is derived from the
+   kalari floor (oxide red) and its oil lamps (flame), never Tailwind stock.
+   ———————————————————————————————————————————————— */
+
+:root {
+  /* palette */
+  --soot:   #120A07;   /* base ground     */
+  --pit:    #1E120C;   /* elevated        */
+  --raise:  #2A1A11;   /* floating        */
+  --kalari: #B8361B;   /* brand core      */
+  --lamp:   #F2761B;   /* derived accent  */
+  --bone:   #F6EADA;   /* ink             */
+  --taupe:  #B39E88;   /* secondary ink   */
+  --hair:   rgba(246,234,218,.13);
+
+  /* one spacing scale */
+  --s1: .5rem; --s2: 1rem; --s3: 1.5rem; --s4: 2rem;
+  --s5: 3rem;  --s6: 4.5rem; --s7: 6.5rem;
+  --section: clamp(4rem, 7vw, 7rem);
+  --gutter: clamp(1.25rem, 5vw, 5rem);
+  --spring: cubic-bezier(.22, 1, .36, 1);
+
+  /* depth: base -> elevated -> floating, tinted to the ground */
+  --e1: 0 1px 2px rgba(18,10,7,.40), 0 2px 6px rgba(18,10,7,.28);
+  --e2: 0 2px 6px rgba(18,10,7,.42), 0 10px 24px rgba(18,10,7,.34), inset 0 1px 0 rgba(246,234,218,.06);
+  --e3: 0 4px 12px rgba(18,10,7,.46), 0 22px 54px rgba(18,10,7,.40), inset 0 1px 0 rgba(246,234,218,.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background-color: var(--soot);
+  background-image:
+    radial-gradient(60rem 40rem at 78% -8%, rgba(184,54,27,.30), transparent 62%),
+    radial-gradient(44rem 34rem at 6% 22%, rgba(242,118,27,.12), transparent 60%),
+    radial-gradient(70rem 50rem at 50% 108%, rgba(184,54,27,.20), transparent 64%);
+  color: var(--bone);
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+
+h1, h2, h3, .wordmark {
+  font-family: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  font-weight: 600;
+  margin: 0;
+}
+h1, h2 { letter-spacing: -.03em; line-height: 1.02; text-wrap: balance; }
+h3 { letter-spacing: -.02em; line-height: 1.18; }
+p { margin: 0; text-wrap: pretty; }
+
+.wrap { width: 100%; max-width: 78rem; margin-inline: auto; padding-inline: var(--gutter); }
+.section { padding-block: var(--section); position: relative; }
+.lede { max-width: 54ch; color: rgba(246,234,218,.82); }
+.muted { color: var(--taupe); }
+.rule { border: 0; border-top: 1px solid var(--hair); margin: 0; }
+
+.skip {
+  position: absolute; left: -9999px;
+  background: var(--bone); color: var(--soot);
+  padding: .6rem 1.2rem; border-radius: 999px; z-index: 60; text-decoration: none;
+}
+.skip:focus { left: var(--gutter); top: 1rem; }
+
+/* grain over the whole page, for depth on a dark ground */
+.grain {
+  position: fixed; inset: 0; z-index: 3; pointer-events: none; opacity: .3;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E");
+}
+
+/* scroll thread down the left edge */
+.thread {
+  position: fixed; left: 0; top: 0; bottom: 0; width: 2px; z-index: 40; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(246,234,218,.10), rgba(246,234,218,.04));
+}
+.thread__fill {
+  position: absolute; inset: 0 auto 0 0; width: 2px;
+  transform-origin: top; transform: scaleY(var(--p, 0));
+  background: linear-gradient(to bottom, var(--lamp), var(--kalari));
+}
+
+/* reveal on entry: transform + opacity only */
+.js [data-reveal] {
+  opacity: 0; transform: translate3d(0, 20px, 0);
+  transition: opacity .7s var(--spring), transform .7s var(--spring);
+  transition-delay: var(--d, 0ms);
+}
+.js [data-reveal].is-in { opacity: 1; transform: translate3d(0, 0, 0); }
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] { opacity: 1; transform: none; transition: none; }
+}
+
+/* photography: gradient overlay + colour treatment layer */
+.shot { position: relative; overflow: hidden; background: var(--pit); border-radius: 3px; }
+.shot > img { width: 100%; height: 100%; object-fit: cover; }
+.shot::before {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(200deg, rgba(184,54,27,.22), rgba(242,118,27,.08));
+  mix-blend-mode: multiply;
+}
+.shot::after {
+  content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: linear-gradient(to top, rgba(18,10,7,.72), rgba(18,10,7,.06) 55%, rgba(18,10,7,.26));
+}
+figure { margin: 0; }
+figcaption {
+  margin-top: .85rem; padding-top: .85rem;
+  border-top: 1px solid var(--hair);
+  font-size: .875rem; line-height: 1.5; color: var(--taupe); max-width: 34ch;
+}
+.elevated { box-shadow: var(--e3); }
+
+/* ——— hero ——— */
+.hero { position: relative; min-height: 88svh; display: flex; flex-direction: column; }
+.hero__bg { position: absolute; inset: 0; border-radius: 0; }
+.hero__bg > img { will-change: transform; object-position: 64% 38%; transform: translate3d(0, var(--py, 0px), 0) scale(1.08); }
+.hero__bg::after {
+  background:
+    linear-gradient(to right, rgba(18,10,7,.92), rgba(18,10,7,.78) 30%, rgba(18,10,7,.26) 60%, rgba(18,10,7,.06) 82%),
+    linear-gradient(to top, rgba(18,10,7,.80), rgba(18,10,7,.10) 60%, rgba(18,10,7,.42));
+}
+.hero__inner { position: relative; z-index: 10; flex: 1; display: flex; align-items: center; padding-block: var(--s6) var(--s7); }
+.hero__kicker { font-size: .8125rem; letter-spacing: .18em; color: var(--taupe); margin-bottom: 1.25rem; }
+.hero h1 { font-size: clamp(2.6rem, 1.4rem + 5.4vw, 5.8rem); max-width: 15ch; }
+.hero__sub { margin-top: 1.5rem; max-width: 46ch; font-size: 1.1875rem; color: rgba(246,234,218,.86); }
+.hero__cta { margin-top: 2.25rem; display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; }
+
+/* ——— nav ——— */
+.nav { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding-block: 1.5rem; gap: 1rem; }
+.wordmark { font-size: 1.15rem; letter-spacing: -.02em; color: var(--bone); text-decoration: none; }
+.wordmark span { color: var(--lamp); }
+.nav__links { display: flex; align-items: center; gap: 1.75rem; font-size: .9375rem; }
+.navlink { color: var(--taupe); text-decoration: none; transition: color .18s var(--spring), opacity .18s var(--spring); }
+.navlink:hover { color: var(--bone); }
+.navlink:focus-visible { outline: 2px solid var(--lamp); outline-offset: 4px; border-radius: 3px; }
+.navlink:active { opacity: .7; }
+.navlink--strong { color: var(--bone); }
+@media (max-width: 640px) { .navlink--hide { display: none; } }
+
+/* ——— controls ——— */
+.btn {
+  display: inline-flex; align-items: center; gap: .6rem;
+  padding: 1rem 1.9rem; border-radius: 999px;
+  background: linear-gradient(180deg, var(--lamp), var(--kalari));
+  color: #190B04; font-weight: 600; font-size: 1rem; letter-spacing: -.01em;
+  text-decoration: none; box-shadow: var(--e2);
+  transition: transform .18s var(--spring), box-shadow .18s var(--spring), filter .18s var(--spring);
+}
+.btn:hover { transform: translate3d(0,-2px,0); box-shadow: var(--e3); filter: brightness(1.07); }
+.btn:active { transform: translate3d(0,1px,0) scale(.985); }
+.btn:focus-visible { outline: 2px solid var(--bone); outline-offset: 3px; }
+
+.link {
+  color: var(--lamp); text-decoration: underline;
+  text-underline-offset: 4px; text-decoration-thickness: 1px;
+  transition: color .18s var(--spring);
+}
+.link:hover { color: var(--bone); }
+.link:focus-visible { outline: 2px solid var(--lamp); outline-offset: 3px; border-radius: 3px; }
+
+/* ——— generic two-column spread ——— */
+.spread { display: grid; gap: var(--s6); }
+@media (min-width: 900px) {
+  .spread { gap: var(--s6); grid-template-columns: 1.05fr .95fr; align-items: start; }
+  .spread--flip { grid-template-columns: .95fr 1.05fr; }
+  .spread--flip > figure { order: -1; }
+  .sticky { position: sticky; top: 6rem; }
+}
+.h2 { font-size: clamp(1.9rem, 1.3rem + 2.4vw, 3.3rem); max-width: 16ch; }
+
+/* ——— stages list ——— */
+.stages { margin: 2.5rem 0 0; max-width: 52ch; display: grid; gap: 1.5rem; }
+.stages dt { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 1.25rem; color: var(--bone); }
+.stages dd { margin: .15rem 0 0; color: rgba(246,234,218,.72); }
+
+/* ——— marquee ——— */
+.marqueeband { position: relative; overflow: hidden; border-block: 1px solid var(--hair); background: rgba(30,18,12,.5); padding-block: 1.1rem; }
+.marquee { display: flex; width: max-content; animation: slide 40s linear infinite; }
+.marquee > span { display: flex; gap: var(--s5); padding-right: var(--s5); font-family: 'Fraunces', Georgia, serif; font-size: 1.1rem; color: var(--taupe); }
+.marquee i { color: var(--lamp); font-style: normal; }
+@keyframes slide { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
+@media (prefers-reduced-motion: reduce) { .marquee { animation: none; } }
+
+/* ——— body map ——— */
+.bodygrid { margin-top: var(--s6); display: grid; gap: var(--s6); }
+@media (min-width: 900px) { .bodygrid { grid-template-columns: .9fr 1.1fr; align-items: start; } }
+.rows { list-style: none; margin: 0; padding: 0; }
+.row { position: relative; border-top: 1px solid var(--hair); padding: 1.6rem 0 1.6rem 1.35rem; transition: opacity .5s var(--spring); }
+.rows > .row:last-child { border-bottom: 1px solid var(--hair); }
+.row:not(.is-lit) { opacity: .34; }
+.row.is-lit { opacity: 1; }
+.row__bar {
+  position: absolute; left: 0; top: 1.4rem; bottom: 1.4rem; width: 2px;
+  background: linear-gradient(to bottom, var(--lamp), var(--kalari));
+  transform-origin: top; transform: scaleY(0);
+  transition: transform .55s var(--spring);
+}
+.row.is-lit .row__bar { transform: scaleY(1); }
+.row h3 { font-size: 1.5rem; color: var(--bone); }
+.row p { margin-top: .2rem; max-width: 46ch; color: rgba(246,234,218,.72); }
+@media (prefers-reduced-motion: reduce) {
+  .row:not(.is-lit) { opacity: .82; }
+  .row__bar { transform: scaleY(1); }
+}
+
+/* ——— quotes ——— */
+.pull {
+  margin: 2rem 0 0; padding-top: 1.5rem; border-top: 1px solid var(--hair);
+  font-family: 'Fraunces', Georgia, serif; font-weight: 600;
+  font-size: clamp(1.2rem, 1rem + 1vw, 1.65rem); line-height: 1.34;
+  color: var(--bone); max-width: 31ch;
+}
+.aside { margin-top: 1.5rem; max-width: 52ch; color: rgba(246,234,218,.72); font-style: italic; }
+
+/* ——— lineage strip ——— */
+.lineage { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--hair); display: flex; align-items: center; gap: 1rem; }
+.lineage .shot { width: 4.5rem; height: 4.5rem; flex: none; }
+.lineage figcaption { margin: 0; padding: 0; border: 0; max-width: 30ch; }
+
+/* ——— offer panel ——— */
+.panel {
+  border: 1px solid var(--hair); border-radius: 14px;
+  background: linear-gradient(180deg, rgba(42,26,17,.72), rgba(30,18,12,.66));
+  padding: clamp(1.5rem, 4vw, 3.25rem); box-shadow: var(--e3);
+}
+.checks { list-style: none; margin: 2rem 0 0; padding: 0; display: grid; gap: .85rem; color: rgba(246,234,218,.82); }
+.checks li { display: flex; gap: .85rem; }
+.checks i { margin-top: .62rem; width: 6px; height: 6px; flex: none; border-radius: 999px; background: var(--lamp); }
+
+/* ——— close ——— */
+.close h2 { font-size: clamp(2.1rem, 1.4rem + 3vw, 4rem); max-width: 13ch; }
+.foot { margin-top: var(--s7); padding-top: 1.5rem; border-top: 1px solid var(--hair); display: flex; flex-wrap: wrap; gap: .5rem 2rem; font-size: .875rem; color: var(--taupe); }
+.foot .wordmark { font-size: 1rem; }
+</style>
 </head>
+
 <body>
 
-<header class="topbar">
-  <span class="topbar-name">AMRUTHA&nbsp;E&nbsp;T</span>
-  <a class="topbar-free" href="free-class.html">Free online class</a>
-  <a class="topbar-ig" href="https://www.instagram.com/kalariwoman_amruthaet_revathi/" target="_blank" rel="noopener">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 2 .25 2.6.5.7.28 1.2.6 1.7 1.1.5.5.85 1 1.1 1.7.25.6.44 1.4.5 2.6.07 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.25 2-.5 2.6-.28.7-.6 1.2-1.1 1.7-.5.5-1 .85-1.7 1.1-.6.25-1.4.44-2.6.5-1.3.07-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-2-.25-2.6-.5-.7-.28-1.2-.6-1.7-1.1-.5-.5-.85-1-1.1-1.7-.25-.6-.44-1.4-.5-2.6C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.25-2 .5-2.6.28-.7.6-1.2 1.1-1.7.5-.5 1-.85 1.7-1.1.6-.25 1.4-.44 2.6-.5C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.14 0-3.5 0-4.75.07-1 .04-1.6.2-1.96.34-.5.19-.85.42-1.22.79-.37.37-.6.72-.79 1.22-.14.36-.3.94-.34 1.96C3.2 8.5 3.2 8.86 3.2 12s0 3.5.07 4.75c.04 1 .2 1.6.34 1.96.19.5.42.85.79 1.22.37.37.72.6 1.22.79.36.14.94.3 1.96.34 1.25.07 1.61.07 4.75.07s3.5 0 4.75-.07c1-.04 1.6-.2 1.96-.34.5-.19.85-.42 1.22-.79.37-.37.6-.72.79-1.22.14-.36.3-.94.34-1.96.07-1.25.07-1.61.07-4.75s0-3.5-.07-4.75c-.04-1-.2-1.6-.34-1.96a3.3 3.3 0 0 0-.79-1.22 3.3 3.3 0 0 0-1.22-.79c-.36-.14-.94-.3-1.96-.34C15.5 4 15.14 4 12 4zm0 3.05A4.95 4.95 0 1 1 12 17a4.95 4.95 0 0 1 0-9.9zm0 1.8a3.15 3.15 0 1 0 0 6.3 3.15 3.15 0 0 0 0-6.3zm5.15-2a1.16 1.16 0 1 1-2.32 0 1.16 1.16 0 0 1 2.32 0z"/></svg>
-  </a>
+<div class="grain" aria-hidden="true"></div>
+<div class="thread" aria-hidden="true"><div class="thread__fill" id="threadFill"></div></div>
+<a class="skip" href="#join">Skip to the free class</a>
+
+<!-- ————————— hero ————————— -->
+<header class="hero">
+  <div class="hero__bg shot" aria-hidden="true">
+    <img id="heroImg" src="images/post-6-hq.jpg" width="1122" height="1403" alt="" fetchpriority="high">
+  </div>
+
+  <div class="wrap nav">
+    <a class="wordmark" href="#top">kalari<span>women</span></a>
+    <div class="nav__links">
+      <a class="navlink navlink--hide" href="#practice">The practice</a>
+      <a class="navlink navlink--hide" href="#revathi">Revathi</a>
+      <a class="navlink navlink--strong" href="#join">Free class</a>
+    </div>
+  </div>
+
+  <div class="wrap hero__inner" id="top">
+    <div>
+      <p class="hero__kicker" data-reveal>HINDUSTAN KALARI SANGHAM · KERALA</p>
+      <h1 data-reveal style="--d:90ms">The martial art of the Goddesses.</h1>
+      <p class="hero__sub" data-reveal style="--d:180ms">
+        Kalaripayattu is one of the oldest fighting systems in the world, trained barefoot on
+        a red earth floor. Revathi teaches it live, online, to women anywhere. Your first
+        class costs nothing.
+      </p>
+      <div class="hero__cta" data-reveal style="--d:270ms">
+        <a class="btn" href="#join">Claim your free class</a>
+        <span class="muted" style="font-size:.9375rem">No experience. No equipment.</span>
+      </div>
+    </div>
+  </div>
 </header>
 
-<section class="hero" id="hero">
-  <div class="hero-media">
-    <img src="images/post-7-hq.jpg" alt="Amrutha E T in an outdoor Udaval sword-fighting demonstration">
-    <div class="hero-scrim"></div>
-  </div>
-  <div class="hero-content">
-    <p class="hero-eyebrow">Hindustan Kalari Sangham</p>
-    <h1>Amrutha&nbsp;E&nbsp;T</h1>
-    <p class="hero-sub">Kalariwoman &middot; Kalaripayattu Trainer</p>
-    <p class="hero-tag">The martial art of the Goddesses</p>
-    <a href="#contact" class="btn btn-outline">Begin your journey</a>
-  </div>
-  <a href="#about" class="scroll-cue" aria-label="Scroll down">
-    <span></span>
-  </a>
-</section>
-
-<section class="about" id="about">
-  <div class="about-media">
-    <img src="images/post-4-hq.jpg" alt="Amrutha E T in a low crouching Kalari stance">
-  </div>
-  <div class="about-content">
-    <p class="section-eyebrow">Lineage</p>
-    <h2>Rooted in a Living Tradition</h2>
-    <p>
-      Granddaughter of <strong>Guru Veerasree Sami Gurukkal</strong>, Amrutha carries
-      forward a lineage of Kalaripayattu passed down through generations — the
-      ancient martial art form of Kerala, one of the oldest fighting systems in
-      the world.
-    </p>
-    <p>
-      She trains at <strong>Hindustan Kalari Sangham</strong>, where centuries-old
-      technique meets a modern practice: strength, focus, and grace built through
-      disciplined, daily return to the same sacred ground.
-    </p>
-    <p class="about-quote">
-      &ldquo;This very floor is where I took my first steps, and over the years,
-      it has become a part of who I am.&rdquo;
-    </p>
-  </div>
-</section>
-
-<section class="gallery" id="gallery">
-  <p class="section-eyebrow center">In Practice</p>
-  <h2 class="center">The Discipline, In Motion</h2>
-  <div class="gallery-grid">
-    <figure class="g-item g-wide">
-      <img src="images/post-1-hq.jpg" alt="Mid-air jump strike during a Vadi Payatt demonstration">
-      <figcaption>Vadi Payatt — absolute focus, agility, and a deep connection to the roots.</figcaption>
-    </figure>
-    <figure class="g-item g-tall">
-      <img src="images/post-2-hq.jpg" alt="Sword and shield fighting stance">
-      <figcaption>The sword tests your focus, the shield demands your presence, and the stage captures your soul.</figcaption>
-    </figure>
-    <figure class="g-item g-tall">
-      <img src="images/post-3-hq.jpg" alt="Close-up dagger fighting stance">
-      <figcaption>Aligned. Centered. Unyielding.</figcaption>
-    </figure>
-    <figure class="g-item g-square">
-      <img src="images/post-5-hq.jpg" alt="Portrait among flowering branches">
-      <figcaption>Honoring the roots that ground me.</figcaption>
-    </figure>
-    <figure class="g-item g-tall">
-      <img src="images/post-6-hq.jpg" alt="Night ritual practice surrounded by oil lamps">
-      <figcaption>We begin with the Vandhanam — strength without humility is merely force.</figcaption>
-    </figure>
-  </div>
-</section>
-
-<section class="classes" id="classes">
-  <p class="section-eyebrow center">Train With Her</p>
-  <h2 class="center">Online &amp; Offline Classes</h2>
-  <div class="class-cards">
-    <div class="class-card">
-      <h3>Online</h3>
-      <p>
-        Wherever you are in the world, train in fluid animal postures, agility,
-        and deep breathwork — building a flexible body and an unbreakable mind
-        from your own living room.
+<!-- ————————— what kalari is ————————— -->
+<section class="section" id="practice">
+  <div class="wrap spread">
+    <div>
+      <h2 class="h2" data-reveal>Born in Kerala. Learned by repetition.</h2>
+      <p class="lede" data-reveal style="--d:90ms; margin-top:1.5rem">
+        A kalari is a sunken earthen pit, and the art is trained inside it barefoot, in
+        sequences repeated until the body stops needing to be told. It moves through four
+        stages, in order, and nobody skips ahead.
       </p>
-      <a href="#contact" class="btn btn-solid">DM for schedule</a>
+      <dl class="stages">
+        <div data-reveal style="--d:120ms">
+          <dt>Meithari</dt>
+          <dd>Body control first. Stances, kicks, jumps and the long low sequences every later movement is built on.</dd>
+        </div>
+        <div data-reveal style="--d:180ms">
+          <dt>Kolthari</dt>
+          <dd>Wooden weapons. The long staff and the short stick, which teach distance and timing without the danger.</dd>
+        </div>
+        <div data-reveal style="--d:240ms">
+          <dt>Angathari</dt>
+          <dd>Metal weapons. Sword and shield, dagger, spear. Only once the body is already honest.</dd>
+        </div>
+        <div data-reveal style="--d:300ms">
+          <dt>Verumkai</dt>
+          <dd>Bare hands. The last stage, not the first, because it needs everything the others built.</dd>
+        </div>
+      </dl>
     </div>
-    <div class="class-card">
-      <h3>Offline</h3>
-      <p>
-        Step onto the Kalari floor itself at Hindustan Kalari Sangham and train
-        directly under generations of lineage — the traditional way this art
-        has always been taught.
+
+    <figure data-reveal style="--d:150ms" class="sticky">
+      <div class="shot elevated" style="aspect-ratio:1079/703">
+        <img src="images/post-7-hq.jpg" width="1079" height="703" loading="lazy"
+             alt="Revathi facing a training partner in an outdoor sword demonstration beside the Kerala backwaters.">
+      </div>
+      <figcaption>Sword practice outdoors, beside the backwaters.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<div class="marqueeband" aria-hidden="true">
+  <div class="marquee">
+    <span>Meithari <i>·</i> Kolthari <i>·</i> Angathari <i>·</i> Verumkai <i>·</i> Vadi Payatt <i>·</i> Vandhanam <i>·</i></span>
+    <span>Meithari <i>·</i> Kolthari <i>·</i> Angathari <i>·</i> Verumkai <i>·</i> Vadi Payatt <i>·</i> Vandhanam <i>·</i></span>
+  </div>
+</div>
+
+<!-- ————————— what it does to a body ————————— -->
+<section class="section" id="body">
+  <div class="wrap">
+    <h2 class="h2" data-reveal style="max-width:14ch">What it does to a body.</h2>
+    <p class="lede" data-reveal style="--d:90ms; margin-top:1.25rem; max-width:52ch">
+      Nothing here is equipment work. The practice trains the body against itself, which is
+      why it changes how you stand long before it changes how you fight.
+    </p>
+
+    <div class="bodygrid">
+      <figure data-reveal class="sticky">
+        <div class="shot elevated" style="aspect-ratio:799/999">
+          <img src="images/post-4-hq.jpg" width="799" height="999" loading="lazy"
+               alt="Revathi low in a ready stance on the kalari floor, hands raised, eyes forward.">
+        </div>
+        <figcaption>A ready stance. Every session starts here.</figcaption>
+      </figure>
+
+      <ul class="rows">
+        <li class="row is-lit" data-row>
+          <div class="row__bar" aria-hidden="true"></div>
+          <h3>Flexibility</h3>
+          <p>Low stances and deep stretching open the hips, spine and shoulders. It is the first thing most people notice.</p>
+        </li>
+        <li class="row" data-row>
+          <div class="row__bar" aria-hidden="true"></div>
+          <h3>Strength</h3>
+          <p>Built from bodyweight and stance work held under tension, so it arrives as usable strength rather than size.</p>
+        </li>
+        <li class="row" data-row>
+          <div class="row__bar" aria-hidden="true"></div>
+          <h3>Balance</h3>
+          <p>Animal postures put you on one leg, low and turning, until control at awkward angles stops being remarkable.</p>
+        </li>
+        <li class="row" data-row>
+          <div class="row__bar" aria-hidden="true"></div>
+          <h3>Breath</h3>
+          <p>Movement is timed to breath from the first lesson. It is why the practice settles the mind as much as the legs.</p>
+        </li>
+        <li class="row" data-row>
+          <div class="row__bar" aria-hidden="true"></div>
+          <h3>Stamina</h3>
+          <p>Sequences run long and unbroken, so conditioning comes from the art itself with nothing bolted on.</p>
+        </li>
+        <li class="row" data-row>
+          <div class="row__bar" aria-hidden="true"></div>
+          <h3>Focus</h3>
+          <p>Weapon work punishes a wandering mind, so attention stops being a mood and becomes a trained skill.</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ————————— women ————————— -->
+<section class="section">
+  <div class="wrap spread spread--flip">
+    <figure data-reveal>
+      <div class="shot elevated" style="aspect-ratio:959/639">
+        <img src="images/post-3-hq.jpg" width="959" height="639" loading="lazy"
+             alt="Revathi holding a dagger at close guard, completely still.">
+      </div>
+      <figcaption>Aligned. Centred. Unyielding.</figcaption>
+    </figure>
+
+    <div>
+      <h2 class="h2" data-reveal style="max-width:15ch">This art never asked women to be smaller.</h2>
+      <p class="lede" data-reveal style="--d:90ms; margin-top:1.5rem; max-width:52ch">
+        Kerala's own stories are full of women who trained in the kalari and were feared for
+        it. Nothing in the practice is scaled down for you, and nothing needs to be. Same
+        floor, same sequences, same standard.
       </p>
-      <a href="#contact" class="btn btn-solid">DM for schedule</a>
+      <blockquote class="pull" data-reveal style="--d:150ms">
+        Kalari isn't just about movement; it's about reclaiming your strength, sharp focus,
+        and absolute grace.
+      </blockquote>
+      <p class="aside" data-reveal style="--d:210ms">
+        To the women looking to break boundaries, connect with an ancient lineage, and build
+        a body that feels unstoppable &mdash; this is your sign.
+      </p>
     </div>
   </div>
 </section>
 
-<section class="quotes">
-  <blockquote>
-    <p>&ldquo;Kalari isn&rsquo;t just about movement; it&rsquo;s about reclaiming
-    your strength, sharp focus, and absolute grace.&rdquo;</p>
-  </blockquote>
-  <blockquote>
-    <p>&ldquo;To the women looking to break boundaries, connect with an ancient
-    lineage, and build a body that feels unstoppable — this is your sign.&rdquo;</p>
-  </blockquote>
-</section>
+<!-- ————————— revathi ————————— -->
+<section class="section" id="revathi">
+  <div class="wrap spread">
+    <div>
+      <h2 class="h2" data-reveal style="max-width:14ch">Meet Revathi.</h2>
+      <p class="lede" data-reveal style="--d:90ms; margin-top:1.5rem">
+        Amrutha E T Revathi is the granddaughter of Guru Veerasree Sami Gurukkal. She trains
+        and teaches at Hindustan Kalari Sangham, on the same red earth floor she learned to
+        walk on, in a lineage handed down rather than written out.
+      </p>
+      <blockquote class="pull" data-reveal style="--d:150ms; max-width:33ch">
+        This very floor is where I took my first steps, and over the years, it has become a
+        part of who I am.
+      </blockquote>
+      <figure class="lineage" data-reveal style="--d:210ms">
+        <div class="shot">
+          <img src="images/profile-hq.jpg" width="320" height="320" loading="lazy"
+               alt="An elder guru tying a ceremonial thread on a young student during a kalari blessing ritual.">
+        </div>
+        <figcaption>A kalari blessing ritual, the tradition she continues.</figcaption>
+      </figure>
+    </div>
 
-<section class="contact" id="contact">
-  <div class="contact-media">
-    <img src="images/profile-hq.jpg" alt="Amrutha E T">
+    <figure data-reveal style="--d:120ms">
+      <div class="shot elevated" style="aspect-ratio:1/1">
+        <img src="images/post-5-hq.jpg" width="1080" height="1080" loading="lazy"
+             alt="Revathi standing among flowering trees outside the kalari, hands open.">
+      </div>
+      <figcaption>Outside Hindustan Kalari Sangham.</figcaption>
+    </figure>
   </div>
-  <h2>Ready to Awaken Your Inner Warrior?</h2>
-  <p>DM on Instagram for online &amp; offline class details.</p>
-  <a href="https://www.instagram.com/kalariwoman_amruthaet_revathi/" target="_blank" rel="noopener" class="btn btn-outline btn-large">
-    DM to Begin Your Journey
-  </a>
 </section>
 
-<footer class="site-footer">
-  <p>Amrutha E T &middot; Hindustan Kalari Sangham &middot;
-    <a href="https://www.instagram.com/kalariwoman_amruthaet_revathi/" target="_blank" rel="noopener">@kalariwoman_amruthaet_revathi</a>
-  </p>
-</footer>
+<!-- ————————— the free class ————————— -->
+<section class="section" id="join">
+  <div class="wrap">
+    <div class="panel">
+      <div class="spread">
+        <div>
+          <h2 class="h2" data-reveal style="max-width:15ch">Your first class is free.</h2>
+          <p class="lede" data-reveal style="--d:90ms; margin-top:1.25rem; max-width:50ch">
+            One live beginner class over video, taught the way it is taught on the floor:
+            breath, stance, and the animal postures everything else is built from. Find out
+            what it feels like before you decide anything.
+          </p>
+          <ul class="checks" data-reveal style="--d:150ms">
+            <li><i></i><span>A phone or laptop with a camera.</span></li>
+            <li><i></i><span>Clothes you can move in, and bare feet.</span></li>
+            <li><i></i><span>Roughly the space of a yoga mat.</span></li>
+            <li><i></i><span>No experience of any martial art at all.</span></li>
+          </ul>
+        </div>
+
+        <figure data-reveal style="--d:180ms">
+          <div class="shot" style="aspect-ratio:1052/1315; box-shadow:var(--e2)">
+            <img src="images/post-2-hq.jpg" width="1052" height="1315" loading="lazy"
+                 alt="Revathi in a sword and shield stance on the kalari floor.">
+          </div>
+          <figcaption>Where the practice eventually goes.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ————————— action ————————— -->
+<section class="section close" style="padding-top:var(--s6)">
+  <div class="wrap">
+    <hr class="rule">
+    <div style="padding-top:var(--s6)">
+      <h2 data-reveal>One message. That is the whole first step.</h2>
+      <p class="lede" data-reveal style="--d:90ms; margin-top:1.5rem; max-width:48ch; font-size:1.1875rem">
+        Send Revathi a message on Instagram and she will reply with the date of the next free
+        online class and the link to join it.
+      </p>
+      <div class="hero__cta" data-reveal style="--d:150ms">
+        <a class="btn" href="https://www.instagram.com/kalariwoman_amruthaet_revathi/" target="_blank" rel="noopener">Message Revathi to join</a>
+        <a class="link" style="font-size:.9375rem" href="https://www.instagram.com/kalariwoman_amruthaet_revathi/" target="_blank" rel="noopener">@kalariwoman_amruthaet_revathi</a>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <span class="wordmark">kalari<span>women</span>.com</span>
+      <span>Amrutha E T Revathi</span>
+      <span>Hindustan Kalari Sangham, Kerala</span>
+    </footer>
+  </div>
+</section>
+
+<script>
+(function () {
+  "use strict";
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var revealIO = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add("is-in"); revealIO.unobserve(e.target); }
+    });
+  }, { rootMargin: "0px 0px -10% 0px", threshold: 0.05 });
+  document.querySelectorAll("[data-reveal]").forEach(function (el) { revealIO.observe(el); });
+
+  var rowIO = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { e.target.classList.toggle("is-lit", e.isIntersecting); });
+  }, { rootMargin: "-42% 0px -42% 0px", threshold: 0 });
+  document.querySelectorAll("[data-row]").forEach(function (el) { rowIO.observe(el); });
+
+  var fill = document.getElementById("threadFill");
+  var hero = document.getElementById("heroImg");
+  var ticking = false;
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      var y = window.scrollY || 0;
+      var max = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+      if (fill) fill.style.setProperty("--p", Math.min(y / max, 1).toFixed(4));
+      if (hero && !reduced) hero.style.setProperty("--py", (y * 0.16).toFixed(1) + "px");
+      ticking = false;
+    });
+  }
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+})();
+</script>
 
 </body>
 </html>
